@@ -1,6 +1,6 @@
 package com.fondo.bufero.WebCalendar.infrastructure.repository;
 
-import com.fondo.bufero.WebCalendar.domain.EventEntity;
+import com.fondo.bufero.WebCalendar.infrastructure.entity.EventEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
