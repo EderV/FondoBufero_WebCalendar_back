@@ -1,17 +1,17 @@
 package com.fondo.bufero.WebCalendar.domain.ports.out;
 
-import com.fondo.bufero.WebCalendar.infrastructure.entity.EventEntity;
+import com.fondo.bufero.WebCalendar.domain.Event;
 
 import java.util.UUID;
 
 public interface EventRepositoryPort {
 
-    void saveEvent(EventEntity event);
+    void saveEvent(Event event);
 
-    void updateEvent(UUID oldEventUUID, EventEntity newEvent);
+    void updateEvent(UUID oldEventUUID, Event newEvent);
 
-    void deleteEvent(EventEntity event);
+    void deleteEvent(Event event);
 
-    EventEntity findEventByUUID(UUID uuid);
+    Event findEventByUUID(UUID uuid);
 
 }

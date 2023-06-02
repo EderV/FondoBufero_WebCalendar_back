@@ -1,6 +1,6 @@
 package com.fondo.bufero.WebCalendar.infrastructure.controller;
 
-import com.fondo.bufero.WebCalendar.infrastructure.entity.EventEntity;
+import com.fondo.bufero.WebCalendar.infrastructure.dto.entity.EventEntity;
 import com.fondo.bufero.WebCalendar.infrastructure.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
