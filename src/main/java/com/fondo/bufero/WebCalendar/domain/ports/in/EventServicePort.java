@@ -8,7 +8,7 @@ public interface EventServicePort {
 
     void saveEvent(Event event);
 
-    void updateEvent(UUID oldEventUUID, Event newEvent);
+    void updateEvent(Event newEvent);
 
     void deleteEvent(Event event);
 

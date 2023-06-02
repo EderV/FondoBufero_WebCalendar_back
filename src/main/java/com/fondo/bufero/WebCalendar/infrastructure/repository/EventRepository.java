@@ -25,7 +25,7 @@ public interface EventRepository extends JpaRepository<EventEntity, UUID> {
             "e.link = ?#{#event.link}, " +
             "e.canceled = ?#{#event.canceled}, " +
             "e.cancelReason = ?#{#event.cancelReason} " +
-            "WHERE e.id = ?1")
-    void updateEvent(UUID eventUUID, EventEntity event);
+            "WHERE e.id = ?#{#event.id}")
+    void updateEvent(EventEntity event);
 
 }

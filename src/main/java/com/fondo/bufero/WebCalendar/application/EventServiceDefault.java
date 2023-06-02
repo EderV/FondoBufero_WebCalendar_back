@@ -20,8 +20,8 @@ public class EventServiceDefault implements EventServicePort {
     }
 
     @Override
-    public void updateEvent(UUID oldEventUUID, Event newEvent) {
-        eventRepositoryPort.updateEvent(oldEventUUID, newEvent);
+    public void updateEvent(Event newEvent) {
+        eventRepositoryPort.updateEvent(newEvent);
     }
 
     @Override

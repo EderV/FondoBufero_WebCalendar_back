@@ -23,9 +23,9 @@ public class EventRepositoryAdapter implements EventRepositoryPort {
     }
 
     @Override
-    public void updateEvent(UUID oldEventUUID, Event newEvent) {
+    public void updateEvent(Event newEvent) {
         var newEventEntity = toEventEntity(newEvent);
-        eventRepository.updateEvent(oldEventUUID, newEventEntity);
+        eventRepository.updateEvent(newEventEntity);
     }
 
     @Override
