@@ -1,0 +1,14 @@
+CREATE TABLE event (
+	id BINARY(16) PRIMARY KEY,
+    title VARCHAR(255),
+    description TEXT,
+    owner VARCHAR(50),
+    logo VARCHAR(255),
+    date DATETIME,
+    duration INT,
+    type VARCHAR(50),
+    link VARCHAR(255),
+    canceled BOOLEAN,
+    cancel_reason TEXT,
+    created_at DATETIME
+)
