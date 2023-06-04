@@ -9,3 +9,10 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     generate-ddl: false
+
+access-refresh-token-path: "access-refresh-token-keys"
+
+access-token:
+  private: "access-refresh-token-keys/access-token-private.key"
+  public: "access-refresh-token-keys/access-token-public.key"
+  duration_minutes: 15
