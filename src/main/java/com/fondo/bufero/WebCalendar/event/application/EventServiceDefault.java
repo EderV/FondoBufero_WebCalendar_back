@@ -6,6 +6,8 @@ import com.fondo.bufero.WebCalendar.event.domain.ports.out.EventRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -32,6 +34,11 @@ public class EventServiceDefault implements EventServicePort {
     @Override
     public Event findEventByUUID(UUID uuid) {
         return eventRepositoryPort.findEventByUUID(uuid);
+    }
+
+    @Override
+    public List<Event> findEventsBetweenDates(Date startDate, Date endDate) {
+        return eventRepositoryPort.findEventsBetweenDates(startDate, endDate);
     }
 
 }

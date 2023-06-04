@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,6 +16,9 @@ public interface EventRepository extends JpaRepository<EventEntity, UUID> {
 
     @Query("SELECT e FROM EventEntity e WHERE e.id = ?1")
     Optional<EventEntity> findEventByUUID(UUID eventUUID);
+
+    @Query("SELECT e FROM EventEntity e WHERE e.date BETWEEN ?1 AND ?2")
+    Optional<List<EventEntity>> findEventsBetweenDates(Date startDate, Date endDate);
 
     @Modifying
     @Query("UPDATE EventEntity e " +

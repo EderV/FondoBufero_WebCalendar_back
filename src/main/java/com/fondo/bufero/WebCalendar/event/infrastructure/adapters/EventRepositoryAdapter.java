@@ -8,6 +8,9 @@ import com.fondo.bufero.WebCalendar.event.infrastructure.repository.EventReposit
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -40,12 +43,26 @@ public class EventRepositoryAdapter implements EventRepositoryPort {
         return event.map(this::toEvent).orElse(null);
     }
 
+    @Override
+    public List<Event> findEventsBetweenDates(Date startDate, Date endDate) {
+        var events = eventRepository.findEventsBetweenDates(startDate, endDate);
+        return events.map(this::toListEvent).orElse(new ArrayList<>());
+    }
+
     private EventEntity toEventEntity(Event event) {
         return EventMapper.MAPPER.toEventEntity(event);
     }
 
     private Event toEvent(EventEntity eventEntity) {
         return EventMapper.MAPPER.toEvent(eventEntity);
+    }
+
+    private List<Event> toListEvent(List<EventEntity> eventEntities) {
+        var events = new ArrayList<Event>();
+        for (var event : eventEntities) {
+            events.add(toEvent(event));
+        }
+        return events;
     }
 
 }

@@ -6,10 +6,14 @@ import com.fondo.bufero.WebCalendar.event.domain.ports.in.EventServicePort;
 import com.fondo.bufero.WebCalendar.event.infrastructure.dto.request.EventRequest;
 import com.fondo.bufero.WebCalendar.event.infrastructure.mappers.EventMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -32,20 +36,41 @@ public class EventController {
             var eventRequest = toEventRequest(event);
             return new ResponseEntity<>(eventRequest, HttpStatus.OK);
         }
-        return new ResponseEntity<>("Event with uuid: " + uuid.toString() + " not found", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(
+                "Event with uuid: " + uuid.toString() + " not found", HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{start_date}/{end_date}")
     public ResponseEntity<?> getEventBetweenDates(
-            @PathVariable(name = "start_date") String startDate,
-            @PathVariable(name = "end_date") String endDate
+            @PathVariable(name = "start_date") @DateTimeFormat(pattern = "dd-MM-yyyy-HH:mm:ss") Date startDate,
+            @PathVariable(name = "end_date") @DateTimeFormat(pattern = "dd-MM-yyyy-HH:mm:ss") Date endDate
     ) {
-        return new ResponseEntity<>("Not implemented", HttpStatus.NO_CONTENT);
+        try {
+            eventRequestCheckerPort.checkDate(startDate, endDate);
+        } catch (IllegalArgumentException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
+        var events = eventServicePort.findEventsBetweenDates(startDate, endDate);
+        if (!events.isEmpty()) {
+            var eventRequests = toListEventRequest(events);
+            return new ResponseEntity<>(eventRequests, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(
+                "There are no events between dates " + startDate + " - " + endDate, HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/save")
     public ResponseEntity<String> save(@RequestBody EventRequest eventRequest) {
         var event = toEvent(eventRequest);
+
+        try {
+            eventRequestCheckerPort.checkFullEvent(event);
+        } catch (IllegalArgumentException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
         eventServicePort.saveEvent(event);
         return ResponseEntity.ok("");
     }
@@ -53,6 +78,13 @@ public class EventController {
     @PostMapping("/update")
     public ResponseEntity<String> update(@RequestBody EventRequest eventRequest) {
         var event = toEvent(eventRequest);
+
+        try {
+            eventRequestCheckerPort.checkFullEvent(event);
+        } catch (IllegalArgumentException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
         eventServicePort.updateEvent(event);
         return ResponseEntity.ok("");
     }
@@ -60,6 +92,13 @@ public class EventController {
     @DeleteMapping("/delete")
     public ResponseEntity<String> delete(@RequestBody EventRequest eventRequest) {
         var event = toEvent(eventRequest);
+
+        try {
+            eventRequestCheckerPort.checkEventForDelete(event);
+        } catch (IllegalArgumentException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
         eventServicePort.deleteEvent(event);
         return ResponseEntity.ok("");
     }
@@ -70,6 +109,14 @@ public class EventController {
 
     private EventRequest toEventRequest(Event event) {
         return EventMapper.MAPPER.toEventRequest(event);
+    }
+
+    private List<EventRequest> toListEventRequest(List<Event> events) {
+        var eventRequests = new ArrayList<EventRequest>();
+        for (var event : events) {
+            eventRequests.add(toEventRequest(event));
+        }
+        return eventRequests;
     }
 
 }
