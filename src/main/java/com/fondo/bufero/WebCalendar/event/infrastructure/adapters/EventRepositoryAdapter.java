@@ -1,10 +1,10 @@
-package com.fondo.bufero.WebCalendar.infrastructure.adapters;
+package com.fondo.bufero.WebCalendar.event.infrastructure.adapters;
 
-import com.fondo.bufero.WebCalendar.domain.Event;
-import com.fondo.bufero.WebCalendar.domain.ports.out.EventRepositoryPort;
-import com.fondo.bufero.WebCalendar.infrastructure.dto.entity.EventEntity;
-import com.fondo.bufero.WebCalendar.infrastructure.mappers.EventMapper;
-import com.fondo.bufero.WebCalendar.infrastructure.repository.EventRepository;
+import com.fondo.bufero.WebCalendar.event.domain.Event;
+import com.fondo.bufero.WebCalendar.event.domain.ports.out.EventRepositoryPort;
+import com.fondo.bufero.WebCalendar.event.infrastructure.dto.entity.EventEntity;
+import com.fondo.bufero.WebCalendar.event.infrastructure.mappers.EventMapper;
+import com.fondo.bufero.WebCalendar.event.infrastructure.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -1,8 +1,8 @@
-package com.fondo.bufero.WebCalendar.infrastructure.mappers;
+package com.fondo.bufero.WebCalendar.event.infrastructure.mappers;
 
-import com.fondo.bufero.WebCalendar.domain.Event;
-import com.fondo.bufero.WebCalendar.infrastructure.dto.entity.EventEntity;
-import com.fondo.bufero.WebCalendar.infrastructure.dto.request.EventRequest;
+import com.fondo.bufero.WebCalendar.event.domain.Event;
+import com.fondo.bufero.WebCalendar.event.infrastructure.dto.entity.EventEntity;
+import com.fondo.bufero.WebCalendar.event.infrastructure.dto.request.EventRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

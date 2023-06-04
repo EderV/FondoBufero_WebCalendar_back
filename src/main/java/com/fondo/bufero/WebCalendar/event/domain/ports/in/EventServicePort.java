@@ -1,6 +1,6 @@
-package com.fondo.bufero.WebCalendar.domain.ports.in;
+package com.fondo.bufero.WebCalendar.event.domain.ports.in;
 
-import com.fondo.bufero.WebCalendar.domain.Event;
+import com.fondo.bufero.WebCalendar.event.domain.Event;
 
 import java.util.UUID;
 

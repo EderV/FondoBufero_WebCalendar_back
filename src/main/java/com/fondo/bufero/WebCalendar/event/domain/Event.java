@@ -1,4 +1,4 @@
-package com.fondo.bufero.WebCalendar.domain;
+package com.fondo.bufero.WebCalendar.event.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

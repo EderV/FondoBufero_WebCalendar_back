@@ -2,7 +2,7 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: jdbc:mysql://localhost:3312/webcalendar
+    url: jdbc:mysql://localhost:3312/webcalendar?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: user1
     password: pass1
     driver-class-name: com.mysql.cj.jdbc.Driver

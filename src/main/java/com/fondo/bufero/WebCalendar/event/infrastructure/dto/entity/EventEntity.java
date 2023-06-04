@@ -1,4 +1,4 @@
-package com.fondo.bufero.WebCalendar.infrastructure.dto.request;
+package com.fondo.bufero.WebCalendar.event.infrastructure.dto.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,10 +11,15 @@ import java.util.Date;
 import java.util.UUID;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventRequest {
+@Entity
+@Table(name = "event")
+public class EventEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     private String title;
@@ -25,6 +30,8 @@ public class EventRequest {
 
     private String logo;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "dd/MM/yyyy hh:mm:ss")
     private Date date;
 
     private Integer duration;   // In minutes
@@ -35,8 +42,17 @@ public class EventRequest {
 
     private Boolean canceled;
 
+    @Column(name = "cancel_reason")
     private String cancelReason;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "dd/MM/yyyy hh:mm:ss")
+    @Column(name = "created_at")
     private Date createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        createdAt = new Date();
+    }
 
 }
