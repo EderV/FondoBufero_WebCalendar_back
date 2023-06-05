@@ -1,6 +1,7 @@
 package com.fondo.bufero.WebCalendar.user.infrastructure.security;
 
 import com.fondo.bufero.WebCalendar.user.domain.in.JwtServicePort;
+import com.fondo.bufero.WebCalendar.user.infrastructure.factory.RequestMatcherFactory;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
@@ -31,17 +32,19 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Value("${endpoints.public}")
-    private String publicEndpoint;
+    private String publicAuthEndpoint;
 
     private final JwtServicePort jwtServicePort;
     private final UserDetailsService userDetailsService;
+    private final RequestMatcherFactory requestMatcherFactory;
+
+    private final RequestMatcher publicAuthEndpointMatcher = requestMatcherFactory.getRequestMatcher(publicAuthEndpoint);
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        var publicEndpointMatcher = createPublicEndpointMatcher();
-        if (!publicEndpointMatcher.matches(request)) {
+        if (!publicAuthEndpointMatcher.matches(request)) {
             var jwt = extractJwtFromHeader(request);
 
             if (isJwtValid(jwt)) {
@@ -51,10 +54,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-    }
-
-    private RequestMatcher createPublicEndpointMatcher() {
-        return new AntPathRequestMatcher(publicEndpoint);
     }
 
     private String extractJwtFromHeader(HttpServletRequest request) throws ServletException {
