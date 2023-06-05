@@ -61,7 +61,7 @@ public class EventController {
                 "There are no events between dates " + startDate + " - " + endDate, HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/save")
+    @PostMapping("/admin/save")
     public ResponseEntity<String> save(@RequestBody EventRequest eventRequest) {
         var event = toEvent(eventRequest);
 
@@ -75,7 +75,7 @@ public class EventController {
         return ResponseEntity.ok("");
     }
 
-    @PostMapping("/update")
+    @PostMapping("/admin/update")
     public ResponseEntity<String> update(@RequestBody EventRequest eventRequest) {
         var event = toEvent(eventRequest);
 
@@ -89,7 +89,7 @@ public class EventController {
         return ResponseEntity.ok("");
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/admin/delete")
     public ResponseEntity<String> delete(@RequestBody EventRequest eventRequest) {
         var event = toEvent(eventRequest);
 
