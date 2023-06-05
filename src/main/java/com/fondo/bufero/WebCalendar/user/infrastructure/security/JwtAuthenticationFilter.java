@@ -6,6 +6,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,8 +42,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
     private final RequestMatcherFactory requestMatcherFactory;
 
-    private final RequestMatcher publicAuthEndpointMatcher = requestMatcherFactory.getRequestMatcher(publicAuthEndpoint);
-    private final RequestMatcher publicEventEndpointMatcher = requestMatcherFactory.getRequestMatcher(publicEventEndpoint);
+    private RequestMatcher publicAuthEndpointMatcher;
+    private RequestMatcher publicEventEndpointMatcher;
+
+    @PostConstruct
+    private void postConstruct() {
+        publicAuthEndpointMatcher = requestMatcherFactory.getRequestMatcher(publicAuthEndpoint);
+        publicEventEndpointMatcher = requestMatcherFactory.getRequestMatcher(publicEventEndpoint);
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
