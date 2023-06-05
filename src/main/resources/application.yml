@@ -25,4 +25,5 @@ access-token:
   duration_minutes: 15
 
 endpoints:
-  public: "/api/auth/**"
+  publicAuth: "/api/auth/**"
+  publicEvent: "/api/event/**"

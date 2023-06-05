@@ -31,20 +31,26 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Value("${endpoints.public}")
+    @Value("${endpoints.publicAuth}")
     private String publicAuthEndpoint;
+
+    @Value("${endpoints.publicEvent}")
+    private String publicEventEndpoint;
 
     private final JwtServicePort jwtServicePort;
     private final UserDetailsService userDetailsService;
     private final RequestMatcherFactory requestMatcherFactory;
 
     private final RequestMatcher publicAuthEndpointMatcher = requestMatcherFactory.getRequestMatcher(publicAuthEndpoint);
+    private final RequestMatcher publicEventEndpointMatcher = requestMatcherFactory.getRequestMatcher(publicEventEndpoint);
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        if (!publicAuthEndpointMatcher.matches(request)) {
+        if (!publicAuthEndpointMatcher.matches(request) &&
+            !publicEventEndpointMatcher.matches(request)
+        ) {
             var jwt = extractJwtFromHeader(request);
 
             if (isJwtValid(jwt)) {

@@ -21,7 +21,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/test/role").hasRole("ADMIN")
+                .requestMatchers("/api/event/**").permitAll()
+                .requestMatchers("/api/event/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated())
 
                 .cors().disable()
