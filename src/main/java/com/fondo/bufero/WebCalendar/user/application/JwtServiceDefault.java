@@ -4,8 +4,8 @@ import com.fondo.bufero.WebCalendar.user.domain.Token;
 import com.fondo.bufero.WebCalendar.user.domain.component.KeyUtils;
 import com.fondo.bufero.WebCalendar.user.domain.component.TokenGenerator;
 import com.fondo.bufero.WebCalendar.user.domain.in.JwtServicePort;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -28,8 +28,14 @@ public class JwtServiceDefault implements JwtServicePort {
     }
 
     @Override
-    public boolean validateAccessToken(String token) {
-        return false;
+    public boolean validateAccessToken(String token)
+            throws SignatureException,
+                MalformedJwtException,
+                ExpiredJwtException,
+                UnsupportedJwtException,
+                IllegalArgumentException
+    {
+        return extractUsernameFromAccessToken(token) != null;
     }
 
     private Claims extractClaimsFromAccessToken(String token) {

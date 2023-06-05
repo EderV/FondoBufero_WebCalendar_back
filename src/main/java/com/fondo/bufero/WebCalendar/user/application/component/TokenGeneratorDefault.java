@@ -24,9 +24,6 @@ public class TokenGeneratorDefault implements TokenGenerator {
     @Value("${access-token.duration_minutes}")
     private long accessTokenDuration;
 
-    @Value("${refresh-token.duration_days}")
-    private long refreshTokenDuration;
-
     private final KeyUtils keyUtils;
 
     @Override

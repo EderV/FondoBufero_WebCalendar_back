@@ -53,7 +53,7 @@ public class UserEntity implements UserDetails {
     private List<RoleEntity> roles;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<RoleEntity> getAuthorities() {
         return roles;
     }
 

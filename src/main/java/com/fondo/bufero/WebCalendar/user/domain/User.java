@@ -1,11 +1,8 @@
 package com.fondo.bufero.WebCalendar.user.domain;
 
-import com.fondo.bufero.WebCalendar.user.infrastructure.dto.entity.RoleEntity;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -37,10 +34,10 @@ public class User implements UserDetails {
 
     private Date createdAt;
 
-    private List<RoleEntity> roles;
+    private List<Role> roles;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<Role> getAuthorities() {
         return roles;
     }
 
