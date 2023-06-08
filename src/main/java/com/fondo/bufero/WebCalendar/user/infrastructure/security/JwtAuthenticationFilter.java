@@ -20,7 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -32,32 +31,24 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Value("${endpoints.publicAuth}")
-    private String publicAuthEndpoint;
-
-    @Value("${endpoints.publicEvent}")
-    private String publicEventEndpoint;
+    @Value("${private_endpoints.event}")
+    private String privateEventEndpoint;
 
     private final JwtServicePort jwtServicePort;
     private final UserDetailsService userDetailsService;
     private final RequestMatcherFactory requestMatcherFactory;
-
-    private RequestMatcher publicAuthEndpointMatcher;
-    private RequestMatcher publicEventEndpointMatcher;
+    private RequestMatcher privateEventEndpointMatcher;
 
     @PostConstruct
     private void postConstruct() {
-        publicAuthEndpointMatcher = requestMatcherFactory.getRequestMatcher(publicAuthEndpoint);
-        publicEventEndpointMatcher = requestMatcherFactory.getRequestMatcher(publicEventEndpoint);
+        privateEventEndpointMatcher = requestMatcherFactory.getRequestMatcher(privateEventEndpoint);
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        if (!publicAuthEndpointMatcher.matches(request) &&
-            !publicEventEndpointMatcher.matches(request)
-        ) {
+        if (privateEventEndpointMatcher.matches(request)) {
             var jwt = extractJwtFromHeader(request);
 
             if (isJwtValid(jwt)) {

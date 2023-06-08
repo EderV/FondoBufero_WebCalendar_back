@@ -24,6 +24,5 @@ access-token:
   public: "access-refresh-token-keys/access-token-public.key"
   duration_minutes: 15
 
-endpoints:
-  publicAuth: "/api/auth/**"
-  publicEvent: "/api/event/**"
+private_endpoints:
+  event: "/api/event/admin/**"

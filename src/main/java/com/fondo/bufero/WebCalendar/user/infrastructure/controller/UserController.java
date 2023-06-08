@@ -36,26 +36,26 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<String> test() {
-        var user = UserEntity.builder()
-                .email("")
-                .username("TestNormalUser")
-                .password(encoder.encode("password_123098"))
-                .accountEnabled(true)
-                .accountExpired(false)
-                .accountLocked(false)
-                .credentialsExpired(false)
-                .build();
-
-        var roleDefault = RoleEntity.builder()
-                .user(user)
-                .role("ROLE_USER")
-                .enabled(true)
-                .build();
-
-        var roles = Arrays.asList(roleDefault); // , roleUser);
-        user.setRoles(roles);
-
-        userRepository.save(user);
+//        var user = UserEntity.builder()
+//                .email("")
+//                .username("TestNormalUser")
+//                .password(encoder.encode("password_123098"))
+//                .accountEnabled(true)
+//                .accountExpired(false)
+//                .accountLocked(false)
+//                .credentialsExpired(false)
+//                .build();
+//
+//        var roleDefault = RoleEntity.builder()
+//                .user(user)
+//                .role("ROLE_USER")
+//                .enabled(true)
+//                .build();
+//
+//        var roles = Arrays.asList(roleDefault); // , roleUser);
+//        user.setRoles(roles);
+//
+//        userRepository.save(user);
 
         return ResponseEntity.ok("");
     }
