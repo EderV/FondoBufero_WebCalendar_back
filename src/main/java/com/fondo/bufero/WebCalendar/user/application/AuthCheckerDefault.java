@@ -26,7 +26,7 @@ public class AuthCheckerDefault implements AuthCheckerPort {
 
     private void checkMinimumDataRequired(Credentials credentials) throws IllegalArgumentException {
         if (credentials.getUsername() == null || credentials.getUsername().isBlank() ||
-            credentials.getPassword() == null || credentials.getUsername().isBlank()
+            credentials.getPassword() == null || credentials.getPassword().isBlank()
         ) {
             throw new IllegalArgumentException(
                     "Data provided in Credentials is not minimum required and/or is not correct");

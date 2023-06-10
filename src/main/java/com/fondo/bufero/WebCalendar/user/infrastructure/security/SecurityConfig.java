@@ -25,7 +25,6 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated())
 
-                .cors().disable()
                 .csrf().disable()
                 .httpBasic().disable()
 
