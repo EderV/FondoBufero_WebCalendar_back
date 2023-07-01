@@ -32,6 +32,7 @@
 			<properties>
 				<packaging.type>jar</packaging.type>
 				<spring.profiles.active>dev</spring.profiles.active>
+				<activeByDefault>true</activeByDefault>
 			</properties>
 		</profile>
 

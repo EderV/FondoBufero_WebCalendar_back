@@ -1,28 +1,28 @@
-spring:
-  profiles:
-    active: dev
-  datasource:
-    url: jdbc:mysql://localhost:3312/webcalendar?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: user1
-    password: pass1
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
-    generate-ddl: false
-
-logging:
-  level:
-    org:
-      hibernate.sql: DEBUG
-      springframework:
-        security: DEBUG
-
-access-refresh-token-path: "access-refresh-token-keys"
-
-access-token:
-  private: "access-refresh-token-keys/access-token-private.key"
-  public: "access-refresh-token-keys/access-token-public.key"
-  duration_minutes: 15
-
-private_endpoints:
-  event: "/api/event/admin/**"
+#spring:
+#  profiles:
+#    active: dev
+#  datasource:
+#    url: jdbc:mysql://localhost:3312/webcalendar?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+#    username: user1
+#    password: pass1
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#  jpa:
+#    database-platform: org.hibernate.dialect.MySQLDialect
+#    generate-ddl: false
+#
+#logging:
+#  level:
+#    org:
+#      hibernate.sql: DEBUG
+#      springframework:
+#        security: DEBUG
+#
+#access-refresh-token-path: "access-refresh-token-keys"
+#
+#access-token:
+#  private: "access-refresh-token-keys/access-token-private.key"
+#  public: "access-refresh-token-keys/access-token-public.key"
+#  duration_minutes: 30
+#
+#private_endpoints:
+#  event: "/api/event/admin/**"

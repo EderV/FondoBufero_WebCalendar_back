@@ -42,8 +42,8 @@ public class EventController {
 
     @GetMapping("/{start_date}/{end_date}")
     public ResponseEntity<?> getEventBetweenDates(
-            @PathVariable(name = "start_date") @DateTimeFormat(pattern = "dd-MM-yyyy-HH:mm:ss") Date startDate,
-            @PathVariable(name = "end_date") @DateTimeFormat(pattern = "dd-MM-yyyy-HH:mm:ss") Date endDate
+            @PathVariable(name = "start_date") @DateTimeFormat(pattern = "dd-MM-yyyy_HH:mm:ss") Date startDate,
+            @PathVariable(name = "end_date") @DateTimeFormat(pattern = "dd-MM-yyyy_HH:mm:ss") Date endDate
     ) {
         try {
             eventRequestCheckerPort.checkDate(startDate, endDate);
