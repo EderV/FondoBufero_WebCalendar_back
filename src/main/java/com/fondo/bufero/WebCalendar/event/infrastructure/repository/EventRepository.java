@@ -25,8 +25,11 @@ public interface EventRepository extends JpaRepository<EventEntity, UUID> {
             "SET " +
             "e.title = ?#{#event.title}, " +
             "e.description = ?#{#event.description}, " +
+            "e.owner = ?#{#event.owner}, " +
+            "e.logo = ?#{#event.logo}, " +
             "e.date = ?#{#event.date}, " +
             "e.duration = ?#{#event.duration}, " +
+            "e.type = ?#{#event.type}," +
             "e.link = ?#{#event.link}, " +
             "e.canceled = ?#{#event.canceled}, " +
             "e.cancelReason = ?#{#event.cancelReason} " +

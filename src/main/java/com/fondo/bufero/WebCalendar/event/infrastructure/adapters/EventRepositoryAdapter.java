@@ -5,6 +5,7 @@ import com.fondo.bufero.WebCalendar.event.domain.ports.out.EventRepositoryPort;
 import com.fondo.bufero.WebCalendar.event.infrastructure.dto.entity.EventEntity;
 import com.fondo.bufero.WebCalendar.event.infrastructure.mappers.EventMapper;
 import com.fondo.bufero.WebCalendar.event.infrastructure.repository.EventRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,7 @@ public class EventRepositoryAdapter implements EventRepositoryPort {
     }
 
     @Override
+    @Transactional
     public void updateEvent(Event newEvent) {
         var newEventEntity = toEventEntity(newEvent);
         eventRepository.updateEvent(newEventEntity);

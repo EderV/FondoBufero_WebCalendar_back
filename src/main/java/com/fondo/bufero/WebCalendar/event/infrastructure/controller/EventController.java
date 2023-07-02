@@ -75,7 +75,7 @@ public class EventController {
         return ResponseEntity.ok("");
     }
 
-    @PostMapping("/admin/update")
+    @PutMapping("/admin/update")
     public ResponseEntity<String> update(@RequestBody EventRequest eventRequest) {
         var event = toEvent(eventRequest);
 
