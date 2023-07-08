@@ -25,30 +25,36 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Value("${private_endpoints.event}")
-    private String privateEventEndpoint;
+    @Value("${private_endpoints}")
+    private List<String> privateEndpoints;
 
     private final JwtServicePort jwtServicePort;
     private final UserDetailsService userDetailsService;
     private final RequestMatcherFactory requestMatcherFactory;
-    private RequestMatcher privateEventEndpointMatcher;
+    private final List<RequestMatcher> privateRequestMatchers = new ArrayList<>();
 
     @PostConstruct
     private void postConstruct() {
-        privateEventEndpointMatcher = requestMatcherFactory.getRequestMatcher(privateEventEndpoint);
+        for (var privateEndpoint : privateEndpoints) {
+            privateRequestMatchers.add(requestMatcherFactory.getRequestMatcher(privateEndpoint));
+        }
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        if (privateEventEndpointMatcher.matches(request)) {
+        boolean urlMatchesMatcher = privateRequestMatchers.stream().anyMatch(matcher -> matcher.matches(request));
+
+        if (urlMatchesMatcher) {
             var jwt = extractJwtFromHeader(request);
 
             if (isJwtValid(jwt)) {
