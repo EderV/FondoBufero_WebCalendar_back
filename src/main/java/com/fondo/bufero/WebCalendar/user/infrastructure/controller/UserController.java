@@ -13,6 +13,7 @@ import com.fondo.bufero.WebCalendar.user.infrastructure.mappers.CredentialsMappe
 import com.fondo.bufero.WebCalendar.user.infrastructure.mappers.TokenMapper;
 import com.fondo.bufero.WebCalendar.user.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -33,6 +34,9 @@ public class UserController {
 
     private final PasswordEncoder encoder;
     private final UserRepository userRepository;
+
+    @Value("${access-token.duration_minutes}")
+    private int accessTokenDuration;
 
     @GetMapping
     public ResponseEntity<String> test() {
@@ -69,6 +73,8 @@ public class UserController {
             var authentication = authServicePort.login(credentials);
             var token = jwtServicePort.getAccessToken(authentication);
             var tokenRequest = toTokenRequest(token);
+
+            tokenRequest.setSessionExpiration(accessTokenDuration);
 
             return new ResponseEntity<>(tokenRequest, HttpStatus.OK);
         } catch (IllegalArgumentException ex) {

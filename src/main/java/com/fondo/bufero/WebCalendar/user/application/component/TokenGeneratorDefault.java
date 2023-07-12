@@ -22,7 +22,7 @@ import java.util.HashMap;
 public class TokenGeneratorDefault implements TokenGenerator {
 
     @Value("${access-token.duration_minutes}")
-    private long accessTokenDuration;
+    private int accessTokenDuration;
 
     private final KeyUtils keyUtils;
 

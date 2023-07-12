@@ -1,6 +1,9 @@
 package com.fondo.bufero.WebCalendar.user.infrastructure.dto.request;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
@@ -12,5 +15,6 @@ public class TokenRequest {
 
     private UUID userId;
     private String accessToken;
+    private int sessionExpiration;
 
 }
