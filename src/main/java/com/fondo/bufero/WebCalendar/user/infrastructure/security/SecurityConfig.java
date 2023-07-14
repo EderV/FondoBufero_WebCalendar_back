@@ -8,10 +8,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -22,16 +22,20 @@ import java.util.List;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     private final JwtAuthenticationFilter filter;
+
+    private final AuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/event/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/event/admin/**").hasRole("ADMINISTRATOR")
                 .requestMatchers("/api/logos/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/event/**").permitAll()
-                .requestMatchers("/api/auth/**").permitAll()
-                .anyRequest().authenticated())
+//                .requestMatchers("/api/event/**").permitAll()
+//                .requestMatchers("/api/auth/**").permitAll()
+//                .anyRequest().authenticated())
+                .anyRequest().permitAll())
 
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
@@ -43,7 +47,7 @@ public class SecurityConfig {
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
 
                 .exceptionHandling((exceptions) -> exceptions
-                        .authenticationEntryPoint(new BasicAuthenticationEntryPoint())
+                        .authenticationEntryPoint(authenticationEntryPoint)
                         .accessDeniedHandler(new AccessDeniedHandlerImpl()));
 
         return http.build();
