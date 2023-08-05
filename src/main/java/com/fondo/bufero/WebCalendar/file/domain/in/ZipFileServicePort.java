@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ZipFileServicePort {
 
-    byte[] createZip(List<Path> paths, OutputStream outputStream) throws IOException;
+    byte[] createZipAsByteArray(List<Path> paths) throws IOException;
 
 }

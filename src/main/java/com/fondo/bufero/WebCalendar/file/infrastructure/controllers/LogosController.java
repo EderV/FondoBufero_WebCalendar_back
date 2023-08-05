@@ -10,14 +10,17 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -82,11 +85,7 @@ public class LogosController {
     }
 
     @PostMapping(value = "/logos-zip", produces = "application/zip")
-    public ResponseEntity<String> getLogosZip(@RequestBody List<String> logosNames, HttpServletResponse response) {
-//        if (logosNames == null || logosNames.isEmpty()) {
-//            return new ResponseEntity<>("List of logos names is empty", HttpStatus.BAD_REQUEST);
-//        }
-
+    public ResponseEntity<?> getLogosZip(@RequestBody List<String> logosNames) {
         var logosPaths = new ArrayList<Path>();
         for (var logoName : logosNames) {
             try {
@@ -97,14 +96,15 @@ public class LogosController {
         }
 
         try {
-            var zipBytes = zipFileServicePort.createZip(logosPaths, response.getOutputStream());
+            var zipBytes = zipFileServicePort.createZipAsByteArray(logosPaths);
 
-//            response.setContentLength(zipBytes.length);
-//            response.getOutputStream().write(zipBytes);
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=logos.zip")
+                    .header(HttpHeaders.CONTENT_LENGTH, String.valueOf(zipBytes.length))
+                    .body(zipBytes);
         } catch (IOException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.ok("");
     }
 
     @GetMapping("/admin/logos-list")

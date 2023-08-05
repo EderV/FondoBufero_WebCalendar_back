@@ -1,11 +1,11 @@
 package com.fondo.bufero.WebCalendar.file.application;
 
 import com.fondo.bufero.WebCalendar.file.domain.in.ZipFileServicePort;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -13,16 +13,19 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 @Service
+@Slf4j
 public class ZipFileServiceDefault implements ZipFileServicePort {
 
     @Override
-    public byte[] createZip(List<Path> paths, OutputStream outputStream) throws IOException {
+    public byte[] createZipAsByteArray(List<Path> paths) throws IOException {
         try (var byteArrayOutStream = new ByteArrayOutputStream();
-             var zipOutStream = new ZipOutputStream(outputStream)) {
+             var zipOutStream = new ZipOutputStream(byteArrayOutStream)) {
 
             for (var path : paths) {
                 addFileToZip(path, zipOutStream);
             }
+
+            zipOutStream.finish();
 
             return byteArrayOutStream.toByteArray();
         }
