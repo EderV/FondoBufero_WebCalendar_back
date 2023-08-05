@@ -64,7 +64,7 @@ public class LogosController {
             var path2 = fileServicePort.getLogo("Captura.png");
             var path3 = fileServicePort.getLogo("Spring-Logo.png");
 
-            zipFileServicePort.createZip(Arrays.asList(path1, path2, path3), response.getOutputStream());
+//            zipFileServicePort.createZip(Arrays.asList(path1, path2, path3), response.getOutputStream());
         } catch (IOException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -79,6 +79,32 @@ public class LogosController {
 //        headers.setContentDisposition(disposition);
 //        response.setStatus(HttpServletResponse.SC_OK);
 //        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=images.zip");
+    }
+
+    @PostMapping(value = "/logos-zip", produces = "application/zip")
+    public ResponseEntity<String> getLogosZip(@RequestBody List<String> logosNames, HttpServletResponse response) {
+//        if (logosNames == null || logosNames.isEmpty()) {
+//            return new ResponseEntity<>("List of logos names is empty", HttpStatus.BAD_REQUEST);
+//        }
+
+        var logosPaths = new ArrayList<Path>();
+        for (var logoName : logosNames) {
+            try {
+                logosPaths.add(fileServicePort.getLogo(logoName));
+            } catch (FileNotFoundException ex) {
+                log.error("File: " + logoName + " not found in logos directory");
+            }
+        }
+
+        try {
+            var zipBytes = zipFileServicePort.createZip(logosPaths, response.getOutputStream());
+
+//            response.setContentLength(zipBytes.length);
+//            response.getOutputStream().write(zipBytes);
+        } catch (IOException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok("");
     }
 
     @GetMapping("/admin/logos-list")
