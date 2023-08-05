@@ -3,6 +3,7 @@ package com.fondo.bufero.WebCalendar.file.application;
 import com.fondo.bufero.WebCalendar.file.domain.in.ZipFileServicePort;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -15,11 +16,15 @@ import java.util.zip.ZipOutputStream;
 public class ZipFileServiceDefault implements ZipFileServicePort {
 
     @Override
-    public void createZip(List<Path> paths, OutputStream outputStream) throws IOException {
-        try (var zipOutStream = new ZipOutputStream(outputStream)) {
+    public byte[] createZip(List<Path> paths, OutputStream outputStream) throws IOException {
+        try (var byteArrayOutStream = new ByteArrayOutputStream();
+             var zipOutStream = new ZipOutputStream(outputStream)) {
+
             for (var path : paths) {
                 addFileToZip(path, zipOutStream);
             }
+
+            return byteArrayOutStream.toByteArray();
         }
     }
 
