@@ -113,7 +113,7 @@ public class LogosController {
         try {
             filenames = (ArrayList<String>) fileServicePort.getAllLogosNames();
         } catch (IOException e) {
-            return new ResponseEntity<>("Error obtainin logos names. " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Error obtaining logos names. " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok(filenames);
     }
