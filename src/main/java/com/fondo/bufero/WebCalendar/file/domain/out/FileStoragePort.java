@@ -11,7 +11,7 @@ public interface FileStoragePort {
 
     void saveFile(MultipartFile file, Path dir) throws IOException;
     Path getFile(Path dir, String filename) throws FileNotFoundException;
-    void getAllFiles(Path dir) throws IOException;
+    List<Path> getAllFiles(Path dir) throws IOException;
     List<String> getAllFilenames(Path dir) throws IOException;
 
 }

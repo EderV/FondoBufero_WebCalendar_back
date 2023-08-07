@@ -1,6 +1,6 @@
 package com.fondo.bufero.WebCalendar.file.application;
 
-import com.fondo.bufero.WebCalendar.file.domain.in.FileServicePort;
+import com.fondo.bufero.WebCalendar.file.domain.in.LogosFilesServicePort;
 import com.fondo.bufero.WebCalendar.file.domain.out.FileStoragePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,23 +14,25 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class FileServiceDefault implements FileServicePort {
+public class LogosFilesServiceDefault implements LogosFilesServicePort {
 
     private final FileStoragePort fileStoragePort;
 
+    private final String logosDirectory = "logos";
+
     @Override
     public void saveLogo(MultipartFile multipartFile) throws IOException {
-        fileStoragePort.saveFile(multipartFile, Paths.get("logos"));
+        fileStoragePort.saveFile(multipartFile, Paths.get(logosDirectory));
     }
 
     @Override
     public Path getLogo(String filename) throws FileNotFoundException {
-        return fileStoragePort.getFile(Paths.get("logos"), filename);
+        return fileStoragePort.getFile(Paths.get(logosDirectory), filename);
     }
 
     @Override
     public List<String> getAllLogosNames() throws IOException {
-        return fileStoragePort.getAllFilenames(Paths.get("logos"));
+        return fileStoragePort.getAllFilenames(Paths.get(logosDirectory));
     }
 
 }

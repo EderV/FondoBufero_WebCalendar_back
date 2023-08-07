@@ -47,8 +47,18 @@ public class FileStorageAdapter implements FileStoragePort {
     }
 
     @Override
-    public void getAllFiles(Path dir) throws IOException {
+    public List<Path> getAllFiles(Path dir) throws IOException {
+        List<Path> fileList = new ArrayList<>();
 
+        try (var stream = Files.newDirectoryStream(dir)) {
+            for (Path file : stream) {
+                if (Files.isRegularFile(file)) {
+                    fileList.add(file);
+                }
+            }
+        }
+
+        return fileList;
     }
 
     @Override
