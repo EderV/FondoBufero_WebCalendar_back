@@ -1,6 +1,7 @@
 package com.fondo.bufero.WebCalendar.event.infrastructure.controller;
 
 import com.fondo.bufero.WebCalendar.event.domain.Event;
+import com.fondo.bufero.WebCalendar.event.domain.exceptions.EventNotFoundException;
 import com.fondo.bufero.WebCalendar.event.domain.ports.in.EventRequestCheckerPort;
 import com.fondo.bufero.WebCalendar.event.domain.ports.in.EventServicePort;
 import com.fondo.bufero.WebCalendar.event.infrastructure.dto.request.EventRequest;
@@ -30,26 +31,23 @@ public class EventController {
     }
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<?> getEventByUUID(@PathVariable(name = "uuid") UUID uuid) {
+    public ResponseEntity<?> getEventByUUID(@PathVariable(name = "uuid") UUID uuid) throws EventNotFoundException {
         var event = eventServicePort.findEventByUUID(uuid);
-        if (event != null) {
+//        if (event != null) {
             var eventRequest = toEventRequest(event);
             return new ResponseEntity<>(eventRequest, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(
-                "Event with uuid: " + uuid.toString() + " not found", HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<>(
+//                "Event with uuid: " + uuid.toString() + " not found", HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{start_date}/{end_date}")
     public ResponseEntity<?> getEventBetweenDates(
             @PathVariable(name = "start_date") @DateTimeFormat(pattern = "dd-MM-yyyy_HH:mm:ss") Date startDate,
             @PathVariable(name = "end_date") @DateTimeFormat(pattern = "dd-MM-yyyy_HH:mm:ss") Date endDate
-    ) {
-        try {
-            eventRequestCheckerPort.checkDate(startDate, endDate);
-        } catch (IllegalArgumentException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    ) throws IllegalArgumentException {
+
+        eventRequestCheckerPort.checkDate(startDate, endDate);
 
         var events = eventServicePort.findEventsBetweenDates(startDate, endDate);
         if (!events.isEmpty()) {
@@ -62,42 +60,30 @@ public class EventController {
     }
 
     @PostMapping("/admin/save")
-    public ResponseEntity<String> save(@RequestBody EventRequest eventRequest) {
+    public ResponseEntity<String> save(@RequestBody EventRequest eventRequest) throws IllegalArgumentException {
         var event = toEvent(eventRequest);
 
-        try {
-            eventRequestCheckerPort.checkFullEvent(event);
-        } catch (IllegalArgumentException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        eventRequestCheckerPort.checkFullEvent(event);
 
         eventServicePort.saveEvent(event);
         return ResponseEntity.ok("");
     }
 
     @PutMapping("/admin/update")
-    public ResponseEntity<String> update(@RequestBody EventRequest eventRequest) {
+    public ResponseEntity<String> update(@RequestBody EventRequest eventRequest) throws IllegalArgumentException {
         var event = toEvent(eventRequest);
 
-        try {
-            eventRequestCheckerPort.checkFullEvent(event);
-        } catch (IllegalArgumentException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        eventRequestCheckerPort.checkFullEvent(event);
 
         eventServicePort.updateEvent(event);
         return ResponseEntity.ok("");
     }
 
     @DeleteMapping("/admin/delete")
-    public ResponseEntity<String> delete(@RequestBody EventRequest eventRequest) {
+    public ResponseEntity<String> delete(@RequestBody EventRequest eventRequest) throws IllegalArgumentException {
         var event = toEvent(eventRequest);
 
-        try {
-            eventRequestCheckerPort.checkEventForDelete(event);
-        } catch (IllegalArgumentException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        eventRequestCheckerPort.checkEventForDelete(event);
 
         eventServicePort.deleteEvent(event);
         return ResponseEntity.ok("");

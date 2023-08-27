@@ -1,6 +1,7 @@
 package com.fondo.bufero.WebCalendar.event.infrastructure.adapters;
 
 import com.fondo.bufero.WebCalendar.event.domain.Event;
+import com.fondo.bufero.WebCalendar.event.domain.exceptions.EventNotFoundException;
 import com.fondo.bufero.WebCalendar.event.domain.ports.out.EventRepositoryPort;
 import com.fondo.bufero.WebCalendar.event.infrastructure.dto.entity.EventEntity;
 import com.fondo.bufero.WebCalendar.event.infrastructure.mappers.EventMapper;
@@ -40,9 +41,10 @@ public class EventRepositoryAdapter implements EventRepositoryPort {
     }
 
     @Override
-    public Event findEventByUUID(UUID uuid) {
+    public Event findEventByUUID(UUID uuid) throws EventNotFoundException {
         var event = eventRepository.findEventByUUID(uuid);
-        return event.map(this::toEvent).orElse(null);
+        return event.map(this::toEvent)
+                .orElseThrow(() -> new EventNotFoundException("Event with UUID " + uuid + " not found in DB"));
     }
 
     @Override

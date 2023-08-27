@@ -1,6 +1,7 @@
 package com.fondo.bufero.WebCalendar.event.application;
 
 import com.fondo.bufero.WebCalendar.event.domain.Event;
+import com.fondo.bufero.WebCalendar.event.domain.exceptions.EventNotFoundException;
 import com.fondo.bufero.WebCalendar.event.domain.ports.in.EventServicePort;
 import com.fondo.bufero.WebCalendar.event.domain.ports.out.EventRepositoryPort;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class EventServiceDefault implements EventServicePort {
     }
 
     @Override
-    public Event findEventByUUID(UUID uuid) {
+    public Event findEventByUUID(UUID uuid) throws EventNotFoundException {
         return eventRepositoryPort.findEventByUUID(uuid);
     }
 
