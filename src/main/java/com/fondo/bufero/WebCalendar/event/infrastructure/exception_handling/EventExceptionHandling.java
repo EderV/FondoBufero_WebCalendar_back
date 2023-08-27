@@ -15,7 +15,7 @@ public class EventExceptionHandling {
     @ExceptionHandler(EventNotFoundException.class)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     private ResponseEntity<String> handleIllegalArgumentException(EventNotFoundException ex) {
-        log.error("EventNotFoundException handled by @ControllerAdvice".concat(ex.getMessage()));
+        log.error("EventNotFoundException handled by Event @ControllerAdvice. Message: ".concat(ex.getMessage()));
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NO_CONTENT);
     }
 

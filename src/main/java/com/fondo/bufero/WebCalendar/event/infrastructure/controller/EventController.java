@@ -33,12 +33,9 @@ public class EventController {
     @GetMapping("/{uuid}")
     public ResponseEntity<?> getEventByUUID(@PathVariable(name = "uuid") UUID uuid) throws EventNotFoundException {
         var event = eventServicePort.findEventByUUID(uuid);
-//        if (event != null) {
-            var eventRequest = toEventRequest(event);
-            return new ResponseEntity<>(eventRequest, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(
-//                "Event with uuid: " + uuid.toString() + " not found", HttpStatus.NO_CONTENT);
+
+        var eventRequest = toEventRequest(event);
+        return new ResponseEntity<>(eventRequest, HttpStatus.OK);
     }
 
     @GetMapping("/{start_date}/{end_date}")

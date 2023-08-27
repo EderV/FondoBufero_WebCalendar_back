@@ -65,24 +65,20 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody CredentialsRequest credentialsRequest) {
+    public ResponseEntity<?> login(@RequestBody CredentialsRequest credentialsRequest)
+            throws IllegalArgumentException, AuthenticationException {
+
         var credentials = toCredentials(credentialsRequest);
 
-        try {
-            authCheckerPort.checkCredentials(credentials);
-            var authentication = authServicePort.login(credentials);
-            var token = jwtServicePort.getAccessToken(authentication);
-            var tokenRequest = toTokenRequest(token);
+        authCheckerPort.checkCredentials(credentials);
 
-            tokenRequest.setSessionExpiration(accessTokenDuration);
+        var authentication = authServicePort.login(credentials);
+        var token = jwtServicePort.getAccessToken(authentication);
+        var tokenRequest = toTokenRequest(token);
 
-            return new ResponseEntity<>(tokenRequest, HttpStatus.OK);
-        } catch (IllegalArgumentException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (AuthenticationException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
-        }
+        tokenRequest.setSessionExpiration(accessTokenDuration);
 
+        return new ResponseEntity<>(tokenRequest, HttpStatus.OK);
     }
 
     private Credentials toCredentials(CredentialsRequest credentialsRequest) {

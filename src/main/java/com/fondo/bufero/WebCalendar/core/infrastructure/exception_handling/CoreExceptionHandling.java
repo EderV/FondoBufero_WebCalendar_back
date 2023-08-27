@@ -16,7 +16,7 @@ public class CoreExceptionHandling {
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     private ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
-        log.error("Exception caught by @ControllerAdvice".concat(ex.getMessage()));
+        log.error("Exception caught by global @ControllerAdvice. Message: ".concat(ex.getMessage()));
         log.error("STACK TRACE: ".concat(Arrays.toString(ex.getStackTrace())));
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
