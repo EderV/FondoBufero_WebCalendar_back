@@ -12,7 +12,7 @@
 
 	<groupId>com.fondo.bufero</groupId>
 	<artifactId>WebCalendar</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<packaging>${packaging.type}</packaging>
 	<name>WebCalendar</name>
 	<description>Web calendar for Moonsama events</description>
@@ -131,6 +131,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>${project.artifactId}-${project.version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
